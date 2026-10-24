@@ -2,6 +2,24 @@
 
 根据提供的《清明上河图》微缩场景参考，用 Three.js 搭建的可交互长卷。这是意境式重建，未把生成图当作历史建筑的精确考证。
 
+[在线试玩（妙搭，免登录）](https://bytedance.feishu.link/app/app_17geaupaa8v) · [观看 65 秒全卷与游戏实录](docs/media/overview-gameplay.mp4) · [观看 92 秒游玩实录](docs/media/full-gameplay.mp4)
+
+[![汴河全卷与虹桥动态预览，点击观看实机录像](docs/media/gameplay-preview.gif)](docs/media/overview-gameplay.mp4)
+
+*点击动态画面观看实际浏览器录像。全卷演示为 4 倍速、无声；录像摄于界面精简前，最新界面以在线游戏为准。*
+
+## 游戏画面
+
+| 沿河街市与虹桥 | 走进画里的春日游会 |
+| --- | --- |
+| ![汴河、虹桥、街市与城门的三维全卷](docs/media/overview.png) | ![主角在街市中行走，旁边有路人、摊位与小地图](docs/media/street.png) |
+| 与摊主问价、还价和买东西 | 点开地图寻找摊位与景点 |
+| ![主角在玩具摊与摊主交谈并选购商品](docs/media/shop.png) | ![标有道路、河流、建筑和当前位置的导航地图](docs/media/map.png) |
+
+乘船穿过虹桥，还可以在河上吟诗、记录见闻：
+
+![主角乘篷船经过虹桥下方的汴河](docs/media/boat.png)
+
 ## 走进画里玩一天
 
 打开后点“出发”，可以选择男孩或女孩扮演主角。跟阿芽解开纸鸢线，找豆豆借鼓或去玩具摊买鼓后一起练习，给城门旁的花婆婆捎一枝花，再到虹桥观察风、试着放飞纸鸢。最后坐船记下一句见闻，回到岸边参加游会。也可以先去买点心、赏花或逛古塔，主线不要求按固定顺序完成。
@@ -42,11 +60,9 @@ Tripo 步行动画接口三次返回参数错误，均退款；当前使用导�
 
 跑步采用交替抬腿、向后屈膝和踝部回收，支撑腿不再一直锁直。男孩、女孩共用同一套步态，模型预览和游戏保持一致。
 
-`recordings/gameplay.mp4` 是实际浏览器游玩录屏，约 92 秒：键盘小跑、地图找人、与阿芽交谈、解线、到玩具摊问价还价、确认购买和拿鼓把玩。录像不含声音，长片段的加速倍数标在画面上；未经剪辑的原速画面保存在 `recordings/gameplay-raw.webm`。`recordings/running.mp4` 是约 16 秒的男女主角侧面屈膝检查。没有用生成视频或注入游戏状态代替实际游玩。
+仓库内可直接观看 [65 秒全卷、虹桥与游戏切换](docs/media/overview-gameplay.mp4) 和 [92 秒游玩过程](docs/media/full-gameplay.mp4)。后者包含键盘小跑、地图找人、与阿芽交谈、解线、到玩具摊问价还价、确认购买和拿鼓把玩。两段均为实际浏览器录屏、无声；加速倍数已标在画面上，没有用生成视频或注入游戏状态代替实际游玩。
 
-WebM 无法播放时使用 `recordings/gameplay-full.mp4`：由同一段原始录像转成 H.264 Constrained Baseline、yuv420p MP4，约 3 分 37 秒，保留加载过程和原速，没有添加声音；已用浏览器实际播放检查。92 秒精简版仍为 `recordings/gameplay.mp4`。
-
-这两段录像录于小地图和分步购物改版前；最新界面以 `ui-clean-street.png`、`ui-compact-shop.png`、`ui-shop-mobile.png` 和实际页面为准。
+录像摄于小地图和分步购物改版前；最新界面以在线游戏为准。README 上方展示的是实机截图，动态预览点击后可打开完整 MP4。
 
 录制脚本为 `scripts/record-gameplay.mjs`、`scripts/record-running.mjs`，原始操作记录和检查结果在录像文件夹。`scripts/package-recording.mjs` 仅裁去载入等待、加说明条并做标注加速，输出 H.264 MP4；视频封装帧率不代表实际游戏帧率。
 
@@ -105,7 +121,7 @@ npm run test:holding
 
 具体检查结果、截图说明及独立复查记录见 [验收记录](VERIFICATION.md)。
 
-最新人群实录为 [全卷、虹桥与游戏切换](recordings/crowd-overview-game.mp4)，65 秒 MP4，明确标注 4 倍速、无声；已在浏览器验证可播放。软件渲染录屏不作为客户端流畅度测试。
+人群实录见上方 [全卷、虹桥与游戏切换](docs/media/overview-gameplay.mp4)。软件渲染录屏不作为客户端流畅度测试。
 
 ## 参考与素材
 
