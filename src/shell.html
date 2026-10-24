@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#e4dccb" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%238e3928'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='%23eee5d2' font-family='serif'%3E汴%3C/text%3E%3C/svg%3E"
+    />
+    <title>汴河入梦 · 清明上河</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #3e392d;
+        --muted: #7c7361;
+        --paper: #eee5d2;
+        --red: #8e3928;
+        --line: #65513a33;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ded5c3;
+        color: var(--ink);
+        font-family: "Songti SC", "Noto Serif CJK SC", "STSong", serif;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--red);
+        outline-offset: 5px;
+      }
+      canvas {
+        display: block;
+        touch-action: none;
+        outline: none;
+      }
+      #scene {
+        position: fixed;
+        inset: 0;
+      }
+      header {
+        position: fixed;
+        top: 38px;
+        left: 42px;
+        pointer-events: none;
+      }
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.33em;
+        color: var(--muted);
+      }
+      h1 {
+        font-weight: 400;
+        font-size: 42px;
+        letter-spacing: 0.16em;
+        margin: 11px 0 10px;
+        line-height: 1.2;
+      }
+      .seal {
+        display: inline-grid;
+        place-items: center;
+        width: 24px;
+        height: 29px;
+        background: var(--red);
+        color: #e9d9b8;
+        font-size: 12px;
+        letter-spacing: 2px;
+        writing-mode: vertical-rl;
+        vertical-align: middle;
+        margin-left: 10px;
+        transform: rotate(-3deg);
+      }
+      .subtitle {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+        margin: 0;
+      }
+      .edition {
+        position: fixed;
+        right: 40px;
+        top: 42px;
+        text-align: right;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        line-height: 2;
+      }
+      .edition span {
+        display: block;
+      }
+      .edition b {
+        color: var(--red);
+        font-weight: 400;
+      }
+      .frame {
+        position: fixed;
+        inset: 18px;
+        border: 1px solid #79654a25;
+        pointer-events: none;
+      }
+      .corner {
+        position: fixed;
+        bottom: 35px;
+        left: 42px;
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 2.1;
+        letter-spacing: 0.08em;
+      }
+      .corner span {
+        display: block;
+      }
+      .right-note {
+        position: fixed;
+        bottom: 37px;
+        right: 42px;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.2em;
+        text-align: right;
+        line-height: 2;
+      }
+      .dock {
+        position: fixed;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px;
+        border: 1px solid #bca98788;
+        background: #f2ebdded;
+        box-shadow:
+          0 8px 30px #4b352019,
+          0 1px 0 #ffffffa0 inset;
+        border-radius: 5px;
+        backdrop-filter: blur(16px);
+      }
+      .view {
+        border: 0;
+        background: none;
+        padding: 12px 18px;
+        white-space: nowrap;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        border-radius: 2px;
+      }
+      .view:hover {
+        background: #dfd0b7;
+      }
+      .view.active {
+        background: var(--ink);
+        color: #f5e9d2;
+      }
+      .divider {
+        height: 23px;
+        width: 1px;
+        background: var(--line);
+        margin: 0 4px;
+      }
+      .icon {
+        background: none;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .icon[aria-pressed="true"] {
+        background: #e1d1b4;
+        color: var(--red);
+      }
+      .icon:hover {
+        border-color: var(--muted);
+      }
+      #caption {
+        position: fixed;
+        bottom: 112px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        pointer-events: none;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        color: #685f4c;
+        white-space: nowrap;
+        text-shadow: 0 1px 8px #eee5d2;
+      }
+      .label {
+        position: fixed;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #faf0db;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-shadow: 0 1px 4px #251b12;
+        transition: opacity 0.3s;
+      }
+      .label:before {
+        content: "";
+        height: 5px;
+        width: 5px;
+        background: #f5e6c7;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px #5d4b3a44;
+      }
+      .label span {
+        padding: 4px 7px;
+        background: #493a2cc7;
+        border: 1px solid #f2dfb433;
+        border-radius: 2px;
+      }
+      #loading {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        display: grid;
+        place-content: center;
+        text-align: center;
+        background: #e4dccb;
+        transition: opacity 0.6s;
+        letter-spacing: 0.3em;
+      }
+      #loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #loading b {
+        font-size: 30px;
+        font-weight: 400;
+      }
+      #loading p {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .load-line {
+        width: 140px;
+        height: 1px;
+        background: #b6a589;
+        margin: 22px auto;
+        position: relative;
+        overflow: hidden;
+      }
+      .load-line:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--red);
+        animation: load 1.5s ease-in-out infinite;
+        transform-origin: left;
+      }
+      @keyframes load {
+        0% {
+          transform: scaleX(0);
+        }
+        60% {
+          transform: scaleX(1);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      #error {
+        display: none;
+        position: fixed;
+        inset: 25%;
+        background: var(--paper);
+        padding: 35px;
+        z-index: 8;
+        line-height: 2;
+      }
+      #error.show {
+        display: block;
+      }
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+      @media (max-width: 700px) {
+        header {
+          top: 28px;
+          left: 26px;
+        }
+        h1 {
+          font-size: 30px;
+          letter-spacing: 0.12em;
+          margin: 9px 0;
+        }
+        .eyebrow {
+          font-size: 8px;
+        }
+        .subtitle {
+          font-size: 10px;
+        }
+        .edition {
+          right: 25px;
+          top: 28px;
+          font-size: 8px;
+        }
+        .edition .desktop {
+          display: none;
+        }
+        .frame {
+          inset: 12px;
+        }
+        .dock {
+          bottom: max(23px, env(safe-area-inset-bottom));
+          gap: 2px;
+          padding: 7px;
+        }
+        .view {
+          font-size: 12px;
+          padding: 12px 10px;
+          letter-spacing: 0;
+        }
+        .icon {
+          width: 33px;
+          height: 33px;
+        }
+        .divider {
+          margin: 0 3px;
+        }
+        .corner {
+          left: 26px;
+          bottom: 90px;
+          font-size: 9px;
+          line-height: 1.7;
+        }
+        .corner span + span {
+          display: none;
+        }
+        .right-note {
+          right: 26px;
+          bottom: 94px;
+          font-size: 8px;
+        }
+        .right-note span {
+          display: none;
+        }
+        #caption {
+          font-size: 10px;
+          bottom: 143px;
+          white-space: normal;
+          width: 85%;
+          line-height: 1.7;
+        }
+        body[data-camera-view="overview"] #caption {
+          top: 132px;
+          bottom: auto;
+        }
+        .label {
+          font-size: 9px;
+        }
+        .label span {
+          padding: 3px 5px;
+        }
+        #error {
+          inset: 20% 8%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="scene" aria-label="可旋转缩放的清明上河图三维微缩场景"></main>
+    <div class="frame"></div>
+    <header>
+      <div class="eyebrow">A DAY ALONG THE RIVER</div>
+      <h1>汴河入梦<span class="seal">上河</span></h1>
+      <p class="subtitle">一卷烟火，半日汴京。</p>
+    </header>
+    <div class="edition">
+      <span>清明上河 · 三维长卷</span
+      ><span class="desktop">木构虹桥 / 沿河市井 / 舟楫往来</span
+      ><b>可自由转看每一面</b>
+    </div>
+    <div id="caption" role="status">沿着汴河，走进画里的春日。</div>
+    <nav class="dock" aria-label="观景位置">
+      <button class="view active" data-view="overview" aria-pressed="true">
+        全卷</button
+      ><button class="view" data-view="bridge" aria-pressed="false">虹桥</button
+      ><button class="view" data-view="harbor" aria-pressed="false">河埠</button
+      ><button class="view" data-view="gate" aria-pressed="false">城阙</button>
+      <div class="divider"></div>
+      <button
+        class="icon"
+        id="tour"
+        aria-label="开启自动环游"
+        aria-pressed="false"
+        title="自动环游"
+      >
+        ↻</button
+      ><button
+        class="icon"
+        id="pause"
+        aria-label="暂停场景动画"
+        aria-pressed="false"
+        title="暂停场景动画"
+      >
+        Ⅱ
+      </button>
+    </nav>
+    <div class="corner">
+      <span>拖动转看 · 滚轮远近</span><span>双指缩放 · 右键平移</span>
+    </div>
+    <div class="right-note">
+      宋人烟火 · 立体意境<br /><span>INSPIRED BY THE QINGMING SCROLL</span>
+    </div>
+    <div id="loading">
+      <b>展开一卷汴京</b>
+      <div class="load-line"></div>
+      <p>桥上行人，河上舟。</p>
+    </div>
+    <div id="error" role="alert"></div>
+    <script>
+      window.addEventListener("error", function (e) {
+        document.getElementById("loading").classList.add("hidden");
+        var box = document.getElementById("error");
+        box.classList.add("show");
+        box.textContent =
+          "场景未能加载。请使用支持 WebGL 的现代浏览器打开。" +
+          (e.message || "");
+      });
+    </script>
+    <script>
+      /* BUNDLED_APP */
+    </script>
+  </body>
+</html>

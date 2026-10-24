@@ -1,0 +1,27 @@
+{
+  "name": "qingming-riverside",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node tests/paths.mjs && node tests/people.mjs && node tests/journey-state.mjs && node tests/crowd.mjs && node tests/crowd-avoidance.mjs && node tests/crowd-liveliness.mjs && node tests/gait.mjs && node tests/animals.mjs && node tests/beginner-route.mjs && node tests/shop-voice-coverage.mjs && node tests/player-voice-coverage.mjs && node tests/role-voice-coverage.mjs && node tests/simplified-ui.mjs",
+    "test:guide": "node tests/guided-start.mjs",
+    "test:characters": "node tests/characters-audio.mjs",
+    "test:ui": "node tests/compact-ui.mjs",
+    "test:holding": "node tests/holding-preview.mjs",
+    "test:crowd-browser": "node tests/crowd-browser.mjs",
+    "test:browser": "node tests/journey-browser.mjs",
+    "test:revision": "node tests/revision-smoke.mjs",
+    "test:controls": "node tests/controls.mjs",
+    "test:boat": "node tests/boat-view.mjs",
+    "test:scene": "node tests/acceptance.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.58.2"
+  }
+}

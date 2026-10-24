@@ -1,0 +1,15 @@
+node_modules/
+test-results.json
+journey-test-results.json
+journey-failure.png
+tests/human-stage.html
+
+# Local browser captures and generated verification artifacts
+/recordings/
+/diagnostics/
+/deployment/
+/*.png
+!/modeling-reference.png
+/*-results.json
+/boat-test-results.json
+/crowd-diagnosis.json
