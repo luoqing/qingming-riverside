@@ -63,7 +63,7 @@ try {
  assert.ok((await state()).money<beforeMoney);
  await click("结束交谈");
  const after=await page.evaluate(()=>window.__qingming.pedestrians);
- const market=after.map((p,i)=>({p,i})).filter(({i})=>i>=86&&i<116&&i%3);
+ const market=after.map((p,i)=>({p,i})).filter(({p,i})=>p.type==="market"&&p.hasPath&&i%3);
  assert.ok(market.filter(({p,i})=>Math.hypot(p.x-before[i].x,p.z-before[i].z)>.1).length>=8);
  assert.notDeepEqual(await page.evaluate(()=>window.__qingming.merchants),merchants);
  for(let i=0;i<after.length;i++)for(let j=0;j<i;j++) {
@@ -71,7 +71,7 @@ try {
   assert.ok(Math.hypot(a.x-b.x,a.z-b.z)-a.radius-b.radius>=-1e-7,"Actual pedestrians must not overlap");
  }
  pass("Purchase only occurs on explicit confirmation; actual market shoppers change position instead of standing still");
- pass("All eight merchants animate their idle pose; actual 133 pedestrians maintain body separation");
+ pass("All eight merchants animate their idle pose; actual 106 pedestrians maintain body separation");
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:new URL("ui-clean-mobile.png",root).pathname,timeout:180000});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);

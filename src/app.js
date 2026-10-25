@@ -1912,10 +1912,10 @@ async function main() {
 
   // People are instanced articulated figurines. They follow banks and the actual bridge profile.
   const crowdGroups = [
-      ["bridge", 30],
-      ["bank", 56],
-      ["market", 30],
-      ["rear", 17],
+      ["bridge", 24],
+      ["bank", 44],
+      ["market", 24],
+      ["rear", 14],
     ],
     actorCount = crowdGroups.reduce((sum, [, count]) => sum + count, 0),
     people = [],

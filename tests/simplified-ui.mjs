@@ -38,14 +38,14 @@ assert.match(journey, /doudouHandPoint\.position/);
 const groups = [...app.matchAll(/\["(bridge|bank|market|rear)",\s*(\d+)\]/g)]
   .map(([, name, count]) => [name, Number(count)]);
 assert.deepEqual(groups, [
-  ["bridge", 30],
-  ["bank", 56],
-  ["market", 30],
-  ["rear", 17],
+  ["bridge", 24],
+  ["bank", 44],
+  ["market", 24],
+  ["rear", 14],
 ]);
 const total = groups.reduce((sum, [, count]) => sum + count, 0);
-assert.equal(total, 133);
-assert.ok((166 - total) / 166 >= 0.19 && (166 - total) / 166 <= 0.21);
+assert.equal(total, 106);
+assert.ok((133 - total) / 133 >= 0.19 && (133 - total) / 133 <= 0.21);
 for (const [name, count] of groups) {
   const combinations = new Set();
   for (let i = 0; i < count; i++) {
@@ -59,4 +59,4 @@ for (const [name, count] of groups) {
 }
 assert.match(app, /age:p\.age,gender:p\.gender/);
 
-console.log("PASS: only map, backpack and ending use large panels; hints are compact; 133 pedestrians remain distributed as men, women, elders and children in every area");
+console.log("PASS: only map, backpack and ending use large panels; hints are compact; 106 pedestrians remain distributed as men, women, elders and children in every area");

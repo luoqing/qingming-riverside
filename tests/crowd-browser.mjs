@@ -17,8 +17,8 @@ const mark=title=>{report.chapters.push({title,seconds:(Date.now()-started)/1000
 async function sample(label,seconds=6){
  const before=await state(),wall=Date.now();
  console.log("BASELINE",label,JSON.stringify({frames:before.frames,crowdUpdateMs:before.crowdUpdateMs,calls:before.calls,triangles:before.triangles,paused:before.paused}));
- assert.equal(before.pedestrians.length,133);
- assert.equal(before.pedestrians.filter(a=>a.hasPath).length,130);
+ assert.equal(before.pedestrians.length,106);
+ assert.equal(before.pedestrians.filter(a=>a.hasPath).length,103);
  for(const type of ["bridge","bank","market","rear"]){
   const local=before.pedestrians.filter(a=>a.type===type);
   assert.ok(local.length>0,`${type}: crowd remains distributed here`);

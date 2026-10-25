@@ -55,9 +55,9 @@ try {
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: 180000 });
   await ready(page);
   const first = await state(page);
-  assert.equal(first.people.length, 133);
+  assert.equal(first.people.length, 106);
   assert.equal(first.boats.length, 8);
-  check("133 figures and 8 boats initialize");
+  check("106 pedestrians and 8 boats initialize");
   await page.screenshot({
     path: new URL("preview.png", root).pathname,
     timeout: 120000,

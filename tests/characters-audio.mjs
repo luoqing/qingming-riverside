@@ -65,7 +65,7 @@ try {
  await page.waitForFunction(()=>!window.__journey.dialogue,null,{timeout:180000});
  pass("NPC neural audio actually plays; selected answer uses boy voice; story progresses after speech without duplicate actions");
  checkPeople(await page.evaluate(()=>window.__qingming.pedestrians));
- pass("All 133 actual pedestrians remain non-overlapping at initial and later street samples");
+ pass("All 106 actual pedestrians remain non-overlapping at initial and later street samples");
  await click("旅行菜单");
  for(const label of ["背景音乐","音效","对白语音"]){await click(label+"：开");assert.equal(await page.getByRole("button",{name:label+"：关",exact:true}).getAttribute("aria-pressed"),"false");}
  await click("继续春游");
