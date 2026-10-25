@@ -6,6 +6,7 @@ const root = new URL("../", import.meta.url);
 const output = new URL("recordings/showcase/", root);
 const url = new URL("index.html", root).href;
 const checkpointFile = new URL("replay-checkpoint.json", output);
+const pickup = process.argv.includes("--pickup");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
   headless: true,
@@ -13,7 +14,7 @@ const browser = await chromium.launch({
   ignoreDefaultArgs: ["--disable-dev-shm-usage"],
   args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
 });
-const report = { kind: "game-tail", source: "actual play resumed from a browser save made by this script", chapters: [], errors: [] };
+const report = { kind: pickup ? "game-finale" : "game-tail", source: "actual play resumed from a browser save made by this script", chapters: [], errors: [] };
 let context, page, video, started;
 const state = () => page.evaluate(() => window.__journey);
 const hold = ms => page.waitForTimeout(ms);
@@ -157,9 +158,11 @@ try {
   started = Date.now();
   await ready();
   await click("继续我的春游");
-  mark("花婆婆告别后，再次过虹桥");
-  await travel("bridge");
-  await hold(1800);
+  if (!pickup) {
+    mark("花婆婆告别后，再次过虹桥");
+    await travel("bridge");
+    await hold(1800);
+  }
   mark("走下虹桥，前往汴河渡口");
   await travel("harbor");
   await talk("沈船娘");
@@ -178,7 +181,11 @@ try {
   await click("牵住线，开始放飞");
   await hold(1000); await click("帮我慢慢放线");
   await page.waitForFunction(() => window.__journey.completed, null, { timeout: 180000 });
-  await hold(4000);
+  await page.locator(".j-finale").waitFor({ state: "visible", timeout: 180000 });
+  const frames = await page.evaluate(() => window.__qingming.frames);
+  await page.waitForFunction(target => window.__qingming.frames >= target, frames + 4, { timeout: 180000 });
+  await page.screenshot({ path: new URL("finale-current.png", output).pathname, timeout: 120000 });
+  await hold(3000);
   mark("结束");
   report.final = { completed: (await state()).completed, rides: (await state()).rides, poems: (await state()).poems };
   assert.ok(report.final.completed && report.final.rides === 1 && report.final.poems.length);
@@ -189,7 +196,7 @@ try {
   throw error;
 } finally {
   if (context) await context.close().catch(() => {});
-  if (video) await video.saveAs(new URL("game-tail-raw.webm", output).pathname).catch(() => {});
-  await writeFile(new URL("game-tail-session.json", output), JSON.stringify(report, null, 2));
+  if (video) await video.saveAs(new URL(`${report.kind}-raw.webm`, output).pathname).catch(() => {});
+  await writeFile(new URL(`${report.kind}-session.json`, output), JSON.stringify(report, null, 2));
   await browser.close().catch(() => {});
 }

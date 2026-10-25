@@ -39,7 +39,8 @@ const game = [
   ["game-tail-raw.webm", 1160, 65, 5, "下桥到渡口 · 向沈船娘买船票"],
   ["game-tail-raw.webm", 1230, 82, 5, "乘船 · 从虹桥下穿过"],
   ["game-tail-raw.webm", 1320, 79, 5, "吟诗 · 记下今天的见闻"],
-  ["game-tail-raw.webm", 1445, 14, 2, "归岸 · 春日游会完成"],
+  ["game-tail-raw.webm", 1445, 14, 2, "归岸 · 与阿芽一起回到渡口"],
+  ["game-finale-raw.webm", 1350, 11, 1, "结尾 · 放飞纸鸢，完成春日游会"],
 ];
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, args: ["--no-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1120, height: 48 }, deviceScaleFactor: 1 });
